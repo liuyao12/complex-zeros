@@ -9,13 +9,12 @@
   #zPlot{cursor:grab}
   #zPlot.panning{cursor:grabbing}
   .flow.ridge{display:none}
-  /* Keep the Newtonian graph visually separate from the level-colored
-     lemniscates: ordinary edges are pale dashed curves, while the branches
-     used in the Sendov path-length bars are thick solid white. */
+  /* Newtonian-graph edges and measured Sendov paths have the same thickness;
+     dashed versus solid is the sole distinction. */
   .flow.down-secondary{
-    stroke:rgba(226,233,240,.72);
-    stroke-width:1.9;
-    stroke-dasharray:5 4;
+    stroke:rgba(255,255,255,.78);
+    stroke-width:4.8;
+    stroke-dasharray:7 6;
   }
   .flow.down-selected{
     stroke:rgba(255,255,255,.98);
@@ -43,7 +42,7 @@
 <main>
   <section class="card">
     <div class="plot-wrap"><div id="zPlot" class="plotbox"><canvas id="landscapeCanvas"></canvas><svg id="zSvg" viewBox="0 0 700 700" preserveAspectRatio="none"></svg></div></div>
-    <div class="hint">Drag blue roots or orange critical points. Drag empty canvas space to pan; use the mouse wheel to zoom. The grid origin follows the center of the smallest enclosing disk. Critical lemniscates are colored from blue (lower level) to orange (higher level). The pale dashed curves form the Newtonian graph; the solid white branches are the paths measured for the Sendov bars.</div>
+    <div class="hint">Drag blue roots or orange critical points. Drag empty canvas space to pan; use the mouse wheel to zoom. The grid origin follows the center of the smallest enclosing disk. Critical lemniscates are colored from blue (lower level) to orange (higher level). The dashed white curves form the Newtonian graph; the solid white branches are the paths measured for the Sendov bars.</div>
   </section>
   <aside class="side-column">
     <section class="card c-card">

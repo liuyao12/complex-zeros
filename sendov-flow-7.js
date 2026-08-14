@@ -1,8 +1,9 @@
 "use strict";
 
-// Keep only those connected components of a critical level set that actually
-// meet a critical point.  A level |P|=|P(w)| can have unrelated components;
-// these are not part of the critical lemniscate through w and are suppressed.
+// Critical lemniscates, colored monotonically by their level.  Only connected
+// components that contain a critical point are retained.  The immediate
+// neighborhood of each critical point is replaced by branches corrected to the
+// exact real-algebraic equation |P(z)|^2 = |P(w)|^2.
 
 function criticalLevelGroups(entries, tolerance = 1e-9) {
   const sorted = entries.slice().sort((a, b) => a.level - b.level);
@@ -13,10 +14,34 @@ function criticalLevelGroups(entries, tolerance = 1e-9) {
       groups.push({level: entry.level, entries: [entry]});
     } else {
       group.entries.push(entry);
-      group.level = group.entries.reduce((s, q) => s + q.level, 0) / group.entries.length;
+      group.level = group.entries.reduce((s, q) => s + q.level, 0) /
+        group.entries.length;
     }
   }
   return groups;
+}
+
+// Low critical levels are blue; higher levels progress through cyan and green
+// to yellow-orange.  This is an ordered scale, not a local hue wheel around a
+// saddle.  All components of the same critical level receive the same color.
+const CRITICAL_LEVEL_PALETTE = [
+  [91, 126, 255],
+  [64, 171, 255],
+  [48, 202, 207],
+  [75, 214, 142],
+  [169, 218, 87],
+  [238, 187, 76],
+  [239, 124, 75]
+];
+
+function criticalLevelColor(index, count, alpha = 0.86) {
+  const t = count <= 1 ? 0.5 : index / (count - 1);
+  const x = t * (CRITICAL_LEVEL_PALETTE.length - 1);
+  const i = Math.floor(x), j = Math.min(CRITICAL_LEVEL_PALETTE.length - 1, i + 1);
+  const u = x - i;
+  const rgb = CRITICAL_LEVEL_PALETTE[i].map((v, k) =>
+    Math.round(v + (CRITICAL_LEVEL_PALETTE[j][k] - v) * u));
+  return `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${alpha})`;
 }
 
 function collectMarchSegments(grid, N, level, sx, sy) {
@@ -117,7 +142,8 @@ function pixelSegmentDistance(p, a, b) {
   const dx = b.x - a.x, dy = b.y - a.y;
   const den = dx * dx + dy * dy;
   if (den < 1e-18) return Math.hypot(p.x - a.x, p.y - a.y);
-  const t = Math.max(0, Math.min(1, ((p.x - a.x) * dx + (p.y - a.y) * dy) / den));
+  const t = Math.max(0, Math.min(1,
+    ((p.x - a.x) * dx + (p.y - a.y) * dy) / den));
   return Math.hypot(p.x - (a.x + t * dx), p.y - (a.y + t * dy));
 }
 
@@ -140,9 +166,6 @@ function strokeSegments(ctx, segments) {
   ctx.stroke();
 }
 
-// Replace the previous contour renderer.  We still patch the immediate
-// neighborhood of each critical point with branches satisfying the exact
-// real-algebraic equation |P(z)|^2-|P(w)|^2=0, so the node is explicit.
 drawLandscape = function(highQuality = true) {
   const show = document.getElementById('landscapeToggle').checked;
   const {w, h} = resizeCanvas(landscapeCanvas, zPlot);
@@ -153,6 +176,13 @@ drawLandscape = function(highQuality = true) {
   const entries = uniqueCriticalEntries();
   if (!entries.length) return;
   const groups = criticalLevelGroups(entries, highQuality ? 1e-9 : 1e-7);
+  const entryColor = new Map();
+  groups.forEach((group, index) => {
+    group.color = criticalLevelColor(index, groups.length, highQuality ? 0.82 : 0.76);
+    group.nodeColor = criticalLevelColor(index, groups.length, 0.98);
+    group.entries.forEach(entry => entryColor.set(entry, group.nodeColor));
+  });
+
   const side = Math.min(w, h);
   const N = highQuality
     ? Math.max(165, Math.min(280, Math.round(side / 2.65)))
@@ -171,10 +201,10 @@ drawLandscape = function(highQuality = true) {
   ctx.save();
   ctx.lineJoin = 'round';
   ctx.lineCap = 'round';
-  ctx.strokeStyle = 'rgba(226,238,244,.68)';
-  ctx.lineWidth = highQuality ? 1.35 : 1.1;
+  ctx.lineWidth = highQuality ? 1.55 : 1.25;
 
   for (const group of groups) {
+    ctx.strokeStyle = group.color;
     const segments = collectMarchSegments(grid, N, group.level, sx, sy);
     for (const component of marchComponents(segments)) {
       if (componentMeetsCriticalPoint(component, group.entries, attachmentThreshold)) {
@@ -189,6 +219,7 @@ drawLandscape = function(highQuality = true) {
   }));
   const pixelsPerUnit = Math.min(w, h) / (2 * state.zView.half);
 
+  // Excise the coarse crossing and insert exact local branches meeting at w.
   ctx.globalCompositeOperation = 'destination-out';
   ctx.fillStyle = '#000';
   for (const patch of patches) {
@@ -199,9 +230,9 @@ drawLandscape = function(highQuality = true) {
   }
 
   ctx.globalCompositeOperation = 'source-over';
-  ctx.strokeStyle = 'rgba(245,250,252,.96)';
-  ctx.lineWidth = highQuality ? 1.8 : 1.45;
+  ctx.lineWidth = highQuality ? 2.0 : 1.6;
   for (const patch of patches) {
+    ctx.strokeStyle = entryColor.get(patch.entry) || 'rgba(245,250,252,.96)';
     for (const branch of traceNodeBranches(patch.entry, patch.radius, highQuality)) {
       ctx.beginPath();
       branch.forEach((z, i) => {
@@ -214,12 +245,55 @@ drawLandscape = function(highQuality = true) {
   ctx.restore();
 };
 
-// Ascending red separatrices were a landscape aid, not part of the Z-W
-// connecting graph. Remove them from the rendered SVG altogether.
+// Ascending red separatrices are not part of the Z-W connecting graph.
 const renderWithoutRidges = renderZ;
 renderZ = function(full = true) {
   renderWithoutRidges(full);
   for (const ridge of [...zSvg.querySelectorAll('.flow.ridge')]) ridge.remove();
 };
+
+// Drag empty space in the main plot to pan. Node handlers stop propagation, so
+// dragging a root or critical point retains its existing meaning.
+zPlot.addEventListener('pointerdown', e => {
+  if (e.button !== 0 || state.dragging) return;
+  if (e.target.closest?.('.node')) return;
+  e.preventDefault();
+  const p = rawEvtPoint(e, zPlot);
+  state.dragging = {
+    kind: 'pan', pointerId: e.pointerId,
+    startX: p.x, startY: p.y,
+    startCx: state.zView.cx, startCy: state.zView.cy,
+    moved: false
+  };
+  zPlot.setPointerCapture?.(e.pointerId);
+  zPlot.classList.add('panning');
+});
+
+window.addEventListener('pointermove', e => {
+  const d = state.dragging;
+  if (!d || d.kind !== 'pan' || e.pointerId !== d.pointerId) return;
+  const p = rawEvtPoint(e, zPlot);
+  const dx = p.x - d.startX, dy = p.y - d.startY;
+  if (Math.hypot(dx, dy) > 2) d.moved = true;
+  const worldPerPixel = 2 * state.zView.half /
+    Math.min(zPlot.clientWidth, zPlot.clientHeight);
+  state.zView.cx = d.startCx - dx * worldPerPixel;
+  state.zView.cy = d.startCy + dy * worldPerPixel;
+  scheduleRender(false);
+}, true);
+
+window.addEventListener('pointerup', e => {
+  const d = state.dragging;
+  if (!d || d.kind !== 'pan' || e.pointerId !== d.pointerId) return;
+  zPlot.classList.remove('panning');
+  scheduleRender(true);
+}, true);
+
+window.addEventListener('pointercancel', e => {
+  const d = state.dragging;
+  if (!d || d.kind !== 'pan' || e.pointerId !== d.pointerId) return;
+  zPlot.classList.remove('panning');
+  scheduleRender(true);
+}, true);
 
 scheduleRender(true);

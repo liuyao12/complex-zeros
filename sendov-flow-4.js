@@ -1,8 +1,8 @@
   function displayedNodePoint(kind,index){
-    const point=pointsFor(kind)[index], members=groupIndices(kind,index), center=toScreen(point,state.zView,zPlot);
-    if(members.length<=1) return center;
-    const k=members.indexOf(index), r=Math.min(7,3.4+members.length*.55), a=2*Math.PI*k/members.length-Math.PI/2;
-    return {x:center.x+r*Math.cos(a),y:center.y+r*Math.sin(a)};
+    // Snapped points represent a true multiple root or critical point, so all
+    // members of the group are drawn at exactly the same location.  The outer
+    // stack ring indicates multiplicity; clicking the stack still unsnaps it.
+    return toScreen(pointsFor(kind)[index],state.zView,zPlot);
   }
 
   function mergeGroups(kind,index,targetIndex){

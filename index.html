@@ -19,11 +19,11 @@
 <main>
   <section class="card">
     <div class="plot-wrap"><div id="zPlot" class="plotbox"><canvas id="landscapeCanvas"></canvas><svg id="zSvg" viewBox="0 0 700 700" preserveAspectRatio="none"></svg></div></div>
-    <div class="hint">Drag blue roots or orange critical points. Nearby points of the same kind snap; click a stacked point to separate it. The purple control changes c while keeping W fixed.</div>
+    <div class="hint">Drag blue roots or orange critical points. Stacked roots stay together until clicked to split. The green Newton graph connects critical points to roots; the measured branch for each root is thickened.</div>
   </section>
   <aside class="side-column">
     <section class="card c-card">
-      <div class="bars-head"><h2>constant c</h2><span class="status">W fixed</span></div>
+      <div class="bars-head"><h2>constant c</h2><span class="status">W fixed · snaps to orange values</span></div>
       <div id="cControl" class="c-control"><svg id="cSvg" viewBox="0 0 300 180" preserveAspectRatio="xMidYMid meet"></svg></div>
     </section>
     <section class="card">
@@ -38,5 +38,6 @@
 <script src="sendov-flow-3.js"></script>
 <script src="sendov-flow-4.js"></script>
 <script src="sendov-flow-5.js"></script>
+<script src="sendov-flow-6.js"></script>
 </body>
 </html>

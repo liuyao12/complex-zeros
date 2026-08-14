@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Sendov Flow Paths</title>
-<link rel="stylesheet" href="sendov-flow.css?v=20260814-0712">
+<link rel="stylesheet" href="sendov-flow.css?v=20260814-0752">
 <style>
   #zPlot{cursor:grab}
   #zPlot.panning{cursor:grabbing}
@@ -24,7 +24,7 @@
 <main>
   <section class="card">
     <div class="plot-wrap"><div id="zPlot" class="plotbox"><canvas id="landscapeCanvas"></canvas><svg id="zSvg" viewBox="0 0 700 700" preserveAspectRatio="none"></svg></div></div>
-    <div class="hint">Drag blue roots or orange critical points. Drag empty canvas space to pan; use the mouse wheel to zoom. Only critical levels |P|=|P(w)| are drawn: every component of one level has the same color, from blue (lower) to orange (higher). The green Newton graph connects critical points to roots, with measured branches thickened.</div>
+    <div class="hint">Drag blue roots or orange critical points. Drag empty canvas space to pan; use the mouse wheel to zoom. The grid origin follows the center of the smallest enclosing disk. Only critical levels |P|=|P(w)| are drawn: every component of one level has the same color, from blue (lower) to orange (higher). The green Newton graph connects critical points to roots, with measured branches thickened.</div>
   </section>
   <aside class="side-column">
     <section class="card c-card">
@@ -38,12 +38,49 @@
   </aside>
 </main>
 
-<script src="sendov-flow-1.js?v=20260814-0712"></script>
-<script src="sendov-flow-2.js?v=20260814-0712"></script>
-<script src="sendov-flow-3.js?v=20260814-0712"></script>
-<script src="sendov-flow-4.js?v=20260814-0712"></script>
-<script src="sendov-flow-5.js?v=20260814-0712"></script>
-<script src="sendov-flow-6.js?v=20260814-0712"></script>
-<script src="sendov-flow-7.js?v=20260814-0712"></script>
+<script src="sendov-flow-1.js?v=20260814-0752"></script>
+<script src="sendov-flow-2.js?v=20260814-0752"></script>
+<script src="sendov-flow-3.js?v=20260814-0752"></script>
+<script src="sendov-flow-4.js?v=20260814-0752"></script>
+<script src="sendov-flow-5.js?v=20260814-0752"></script>
+<script src="sendov-flow-6.js?v=20260814-0752"></script>
+<script src="sendov-flow-7.js?v=20260814-0752"></script>
+<script>
+  // Use the center of the current smallest enclosing disk as the displayed
+  // coordinate origin. This changes only the grid and axes, not P, Z, or W.
+  drawGrid = function(svg, view, el) {
+    const {w, h} = dims(el);
+    const step = niceStep(2 * view.half / 5);
+    const scaleDen = Math.min(w, h);
+    const xmin = view.cx - view.half * w / scaleDen;
+    const xmax = view.cx + view.half * w / scaleDen;
+    const ymin = view.cy - view.half * h / scaleDen;
+    const ymax = view.cy + view.half * h / scaleDen;
+    const origin = smallestEnclosingCircle(state.Z).center;
+
+    const kx0 = Math.ceil((xmin - origin.re) / step);
+    const kx1 = Math.floor((xmax - origin.re) / step);
+    for (let k = kx0; k <= kx1; k++) {
+      const x = origin.re + k * step;
+      const p = toScreen(C(x, origin.im), view, el);
+      svg.appendChild(svgEl('line', {
+        x1: p.x, y1: 0, x2: p.x, y2: h,
+        class: k === 0 ? 'axis-line' : 'grid-line'
+      }));
+    }
+
+    const ky0 = Math.ceil((ymin - origin.im) / step);
+    const ky1 = Math.floor((ymax - origin.im) / step);
+    for (let k = ky0; k <= ky1; k++) {
+      const y = origin.im + k * step;
+      const p = toScreen(C(origin.re, y), view, el);
+      svg.appendChild(svgEl('line', {
+        x1: 0, y1: p.y, x2: w, y2: p.y,
+        class: k === 0 ? 'axis-line' : 'grid-line'
+      }));
+    }
+  };
+  scheduleRender(true);
+</script>
 </body>
 </html>

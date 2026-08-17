@@ -1,9 +1,22 @@
 # Complex zeros
 
-An interactive visualization of the zeros of a complex polynomial, the zeros of its derivative, Newton separatrices, critical level contours of `log |P|`, and a path-length strengthening of Sendov's theorem.
+Interactive visualizations of polynomial and rational Newton flows.
 
-**GitHub Pages URL:** https://liuyao12.github.io/complex-zeros/
+- **Polynomial / Sendov page:** https://liuyao12.github.io/complex-zeros/
+- **Rational-function page:** https://liuyao12.github.io/complex-zeros/rational.html
 
-To activate the site once, open **Settings → Pages**, choose **Deploy from a branch**, select **main** and **/(root)**, then save. The repository already contains `index.html` and `.nojekyll`; later pushes to `main` will republish it automatically.
+## Polynomial page
 
-Drag blue roots or orange critical points. Nearby points of the same kind snap together; click a snapped stack to separate it. The bars show the shortest traced descending saddle-to-root path for each root, divided by the radius of the smallest enclosing disk.
+Shows the zeros of a polynomial, the zeros of its derivative, the Newtonian graph, critical lemniscates, the smallest enclosing disk, and normalized Newton-path lengths related to Sendov's theorem.
+
+## Rational page
+
+For
+
+```text
+f(z) = ∏(z-a_i) / ∏(z-b_j),
+```
+
+shows zeros, poles, non-pole critical points, the zero-side Newton graph, its pole-side dual graph, and all critical lemniscates `|f(z)| = |f(w)|`. Solid white separatrices run from saddles to zeros; equally thick dashed separatrices run from poles to saddles. The tracer changes to the reciprocal coordinate `u = 1/z` when an edge crosses infinity on the Riemann sphere.
+
+On both pages, points can be dragged, empty canvas space can be panned, and the mouse wheel zooms.

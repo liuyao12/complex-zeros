@@ -17,6 +17,19 @@ For
 f(z) = ∏(z-a_i) / ∏(z-b_j),
 ```
 
-shows zeros, poles, non-pole critical points, the zero-side Newton graph, its pole-side dual graph, and all critical lemniscates `|f(z)| = |f(w)|`. Solid white separatrices run from saddles to zeros; equally thick dashed separatrices run from poles to saddles. The tracer changes to the reciprocal coordinate `u = 1/z` when an edge crosses infinity on the Riemann sphere.
+shows zeros, poles, critical points, the zero-side Newton graph, its pole-side dual graph, and all critical lemniscates `|f(z)| = |f(w)|`.
 
-On both pages, points can be dragged, empty canvas space can be panned, and the mouse wheel zooms.
+The rational editor supports:
+
+- dragging finite zeros and poles;
+- live placement of a new zero or pole before committing it;
+- the exact family `f ↦ f + c`, which moves zeros while fixing all poles and all critical points;
+- Möbius chart changes that send a chosen zero or pole to infinity;
+- unequal finite zero/pole counts, with the missing divisor and any ramification displayed at infinity;
+- a rotatable Riemann-sphere view of the points and Newton separatrices.
+
+A single critical point is deliberately not treated as an independent draggable parameter: with the poles and the remaining critical points fixed, the zero-residue constraints on `f′` are generically incompatible with moving only that critical point.
+
+Solid white separatrices run from saddles to zeros; equally thick dashed separatrices run from poles to saddles. The tracer uses the reciprocal coordinate `u = 1/z` for edges crossing or ending at infinity.
+
+On both pages, empty canvas space can be panned and the mouse wheel zooms.

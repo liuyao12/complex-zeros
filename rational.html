@@ -1,5 +1,75 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Newton Graphs of Rational Functions</title><link rel="stylesheet" href="rational.css?v=1"></head><body>
-<header><div class="title-wrap"><h1>Newton graphs of rational functions</h1><a class="back-link" href="./">Polynomial / Sendov page</a></div><div class="controls"><label class="control">degree <select id="degreeSelect"><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></label><button id="resetBtn">Reset</button><button id="randomBtn">Random</button><button id="fitBtn">Fit</button><label class="control"><input id="lemniscateToggle" type="checkbox" checked> critical lemniscates</label><label class="control"><input id="graphToggle" type="checkbox" checked> Newton graph</label><label class="control"><input id="diskToggle" type="checkbox" checked> enclosing disk</label></div></header>
-<main><section class="card"><div class="plot-wrap"><div id="plot" class="plotbox"><canvas id="contourCanvas"></canvas><svg id="plotSvg" viewBox="0 0 800 800" preserveAspectRatio="none"></svg></div></div><div class="hint">Drag blue zeros or pink diamond poles. Drag empty space to pan; use the mouse wheel to zoom. Nearby points of the same type snap into a multiple zero or pole; click a stacked point to separate it. Solid white branches run from critical points to zeros, and equally thick dashed branches run from poles to critical points. A branch passing through ∞ exits and re-enters the affine view.</div></section>
-<aside class="side"><section class="card"><div class="panel-head"><h2>rational Newton flow</h2><span id="countStatus" class="status"></span></div><div class="panel-body"><div class="legend"><div class="legend-row"><span class="swatch zero"></span><span>zeros of <i>f</i> — sinks</span></div><div class="legend-row"><span class="swatch pole"></span><span>poles of <i>f</i> — sources</span></div><div class="legend-row"><span class="swatch critical"></span><span>non-pole critical points — saddles</span></div><div class="legend-row"><span class="swatch solid"></span><span>zero-side Newton graph</span></div><div class="legend-row"><span class="swatch dashed"></span><span>pole-side dual graph</span></div><div class="legend-row"><span class="swatch level"></span><span>critical lemniscates, colored by increasing <span style="white-space:nowrap">log |f|</span></span></div></div><div id="warning" class="warning"></div></div></section>
-<section class="card"><div class="panel-head"><h2>model</h2><span class="status">monic normalization</span></div><div class="panel-body math-note"><div><code>f(z)=∏(z−a)/∏(z−b)</code></div><p>The critical points are the zeros of <code>D=P′Q−PQ′</code>. The desingularized field <code>ż=−P Q · conjugate(D)</code> has the same unparametrized trajectories as <code>ż=−f/f′</code>.</p><p>Forward branches end at zeros and backward branches begin at poles. The colored curves are exactly the levels <code>|f(z)|=|f(w)|</code> through critical points <code>w</code>. The tracer changes to <code>u=1/z</code> when a spherical edge crosses infinity.</p></div></section></aside></main><script src="rational-1.js?v=1"></script><script src="rational-2.js?v=1"></script><script src="rational-3.js?v=1"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Newton Graphs of Rational Functions</title>
+<link rel="stylesheet" href="rational.css?v=20260817-0748">
+<link rel="stylesheet" href="rational-4.css?v=20260817-0748">
+</head>
+<body>
+<header>
+  <div class="title-wrap">
+    <h1>Newton graphs of rational functions</h1>
+    <a class="back-link" href="./">Polynomial / Sendov page</a>
+  </div>
+  <div class="controls">
+    <select id="degreeSelect" hidden><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select>
+    <button id="addZeroBtn">Add zero</button>
+    <button id="addPoleBtn">Add pole</button>
+    <button id="fiberBtn" title="Drag a zero in the family f+c; every pole and critical point remains fixed.">Move zeros (W fixed)</button>
+    <button id="toInfinityBtn" title="Choose a zero or pole and change affine chart so that point is at infinity.">Point → ∞</button>
+    <button id="resetBtn">Reset</button>
+    <button id="randomBtn">Random</button>
+    <button id="fitBtn">Fit</button>
+    <label class="control"><input id="lemniscateToggle" type="checkbox" checked> critical lemniscates</label>
+    <label class="control"><input id="graphToggle" type="checkbox" checked> Newton graph</label>
+    <label class="control"><input id="diskToggle" type="checkbox" checked> enclosing disk</label>
+  </div>
+</header>
+<main>
+  <section class="card">
+    <div class="plot-wrap">
+      <div id="plot" class="plotbox">
+        <canvas id="contourCanvas"></canvas>
+        <svg id="plotSvg" viewBox="0 0 800 800" preserveAspectRatio="none"></svg>
+      </div>
+    </div>
+    <div class="hint">Drag blue zeros or pink diamond poles. Add-zero and add-pole modes update the entire rational map under the pointer before you click. Drag empty space to pan; use the wheel to zoom. Critical points are constrained outputs: a single one cannot generally move while all the others and all poles stay fixed. “Move zeros (W fixed)” uses the exact family <i>f</i>+<i>c</i>. “Point → ∞” is a Möbius change of affine chart, not deletion of the point.</div>
+  </section>
+  <aside class="side">
+    <section class="card">
+      <div class="panel-head"><h2>Riemann sphere</h2><span id="sphereStatus" class="status"></span></div>
+      <div id="sphereWrap" class="sphere-wrap"><svg id="sphereSvg" viewBox="0 0 300 300" aria-label="Riemann sphere"></svg></div>
+      <div class="sphere-hint">Drag the sphere to rotate it. The same zeros, poles, critical points, and Newton separatrices are shown stereographically; the north-pole marker is ∞.</div>
+    </section>
+    <section class="card">
+      <div class="panel-head"><h2>rational Newton flow</h2><span id="countStatus" class="status"></span></div>
+      <div class="panel-body">
+        <div class="legend">
+          <div class="legend-row"><span class="swatch zero"></span><span>zeros of <i>f</i> — sinks</span></div>
+          <div class="legend-row"><span class="swatch pole"></span><span>poles of <i>f</i> — sources</span></div>
+          <div class="legend-row"><span class="swatch critical"></span><span>critical points — saddles or ramification points</span></div>
+          <div class="legend-row"><span class="swatch solid"></span><span>zero-side Newton graph</span></div>
+          <div class="legend-row"><span class="swatch dashed"></span><span>pole-side dual graph</span></div>
+          <div class="legend-row"><span class="swatch level"></span><span>critical lemniscates, colored by increasing <span style="white-space:nowrap">log |f|</span></span></div>
+        </div>
+        <div id="warning" class="warning"></div>
+      </div>
+    </section>
+    <section class="card">
+      <div class="panel-head"><h2>model</h2><span class="status">divisors on ℂP¹</span></div>
+      <div class="panel-body math-note">
+        <div><code>f(z)=∏(z−a)/∏(z−b)</code></div>
+        <p>Finite critical points are roots of <code>D=P′Q−PQ′</code>. If the finite zero and pole counts differ, the missing divisor lies at ∞. The reciprocal chart is padded to the common map degree, so separatrices ending at or crossing ∞ are traced on the sphere.</p>
+        <p>For fixed poles, the admissible critical divisor satisfies residue constraints. By contrast, <code>f↦f+c</code> fixes every pole and every critical point while moving the zero divisor.</p>
+      </div>
+    </section>
+  </aside>
+</main>
+<script src="rational-1.js?v=20260817-0748"></script>
+<script src="rational-2.js?v=20260817-0748"></script>
+<script src="rational-3.js?v=20260817-0748"></script>
+<script src="rational-4.js?v=20260817-0748"></script>
+</body>
+</html>

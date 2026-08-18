@@ -4,9 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Newton Graphs of Rational Functions</title>
-<link rel="stylesheet" href="rational.css?v=20260817-0854">
-<link rel="stylesheet" href="rational-4.css?v=20260817-0854">
-<link rel="stylesheet" href="rational-5.css?v=20260817-0854">
+<link rel="stylesheet" href="rational.css?v=20260818-1038">
+<link rel="stylesheet" href="rational-4.css?v=20260818-1038">
+<link rel="stylesheet" href="rational-5.css?v=20260818-1038">
+<link rel="stylesheet" href="rational-7.css?v=20260818-1038">
 </head>
 <body>
 <header>
@@ -23,20 +24,22 @@
     <button id="resetBtn">Reset</button>
     <button id="randomBtn">Random</button>
     <button id="fitBtn">Fit</button>
+    <label class="control"><input id="fieldToggle" type="checkbox" checked> field lines</label>
     <label class="control"><input id="lemniscateToggle" type="checkbox" checked> critical lemniscates</label>
     <label class="control"><input id="graphToggle" type="checkbox" checked> Newton graph</label>
-    <label class="control"><input id="diskToggle" type="checkbox" checked> zero disk</label>
+    <label class="control"><input id="diskToggle" type="checkbox" checked> global zero disk</label>
   </div>
 </header>
 <main>
   <section class="card">
     <div class="plot-wrap">
       <div id="plot" class="plotbox">
+        <canvas id="fieldCanvas"></canvas>
         <canvas id="contourCanvas"></canvas>
         <svg id="plotSvg" viewBox="0 0 800 800" preserveAspectRatio="none"></svg>
       </div>
     </div>
-    <div class="hint">Drag blue zeros or pink diamond poles. Add-zero and add-pole modes update the entire rational map under the pointer before you click. Drag empty space to pan; use the wheel to zoom. The yellow circle is the smallest disk containing every zero in the current affine chart. The thickest solid branches are the shortest Newton edges used in the length bars.</div>
+    <div class="hint">Drag blue zeros or pink diamond poles. Add-zero and add-pole modes update the rational map under the pointer before you click. Faint arrowed curves are ordinary Newton-flow trajectories from poles toward zeros; they are rendered sparsely during motion and refined when the pointer stops. The thick white curves are the exact separatrix graph. The yellow circle is the globally smallest zero-enclosing disk, while each bar uses its own root-centered radius r(a).</div>
   </section>
   <aside class="side">
     <section class="card">
@@ -45,7 +48,7 @@
       <div class="sphere-hint">Drag the sphere to rotate it. The same zeros, poles, critical points, and Newton separatrices are shown stereographically; the north-pole marker is ∞.</div>
     </section>
     <section class="card">
-      <div class="panel-head"><h2>Newton-edge length / R</h2><span id="zeroDiskStatus" class="status"></span></div>
+      <div class="panel-head"><h2>Newton-edge length / r(a)</h2><span id="zeroDiskStatus" class="status"></span></div>
       <div class="panel-body">
         <div id="rationalFlowBars" class="r5-bars"></div>
         <div id="rationalFlowAxis" class="r5-axis"></div>
@@ -59,6 +62,7 @@
           <div class="legend-row"><span class="swatch zero"></span><span>zeros of <i>f</i> — sinks</span></div>
           <div class="legend-row"><span class="swatch pole"></span><span>poles of <i>f</i> — sources</span></div>
           <div class="legend-row"><span class="swatch critical"></span><span>critical points — saddles or ramification points</span></div>
+          <div class="legend-row"><span class="swatch field"></span><span>sampled Newton-flow field lines</span></div>
           <div class="legend-row"><span class="swatch solid"></span><span>zero-side Newton graph</span></div>
           <div class="legend-row"><span class="swatch dashed"></span><span>pole-side dual graph</span></div>
           <div class="legend-row"><span class="swatch level"></span><span>critical lemniscates, colored by increasing <span style="white-space:nowrap">log |f|</span></span></div>
@@ -71,16 +75,17 @@
       <div class="panel-body math-note">
         <div><code>f(z)=∏(z−a)/∏(z−b)</code></div>
         <p>Finite critical points are roots of <code>D=P′Q−PQ′</code>. If the finite zero and pole counts differ, the missing divisor lies at ∞. The reciprocal chart is padded to the common map degree, so separatrices ending at or crossing ∞ are traced on the sphere.</p>
-        <p>For each finite zero, the bar is the shortest resolved incident Newton-edge arc divided by the zero-disk radius <code>R</code>. The orange marker is the ordinary distance to the nearest finite critical point. The sharp universal rational theorem controls that straight distance by <code>2R</code>; the curved graph length is a stronger experimental statistic.</p>
+        <p>For a finite zero <code>a</code>, define <code>r(a)=max |a−α|</code> over all zeros <code>α</code>. The disk centered at <code>a</code> with radius <code>r(a)</code> contains the full zero fiber, so the rational circular-region theorem guarantees a critical point in it. The orange marker is that nearest-critical straight distance divided by <code>r(a)</code>; the white bar is the stronger experimental Newton-edge arc length divided by <code>r(a)</code>.</p>
       </div>
     </section>
   </aside>
 </main>
-<script src="rational-1.js?v=20260817-0854"></script>
-<script src="rational-2.js?v=20260817-0854"></script>
-<script src="rational-3.js?v=20260817-0854"></script>
-<script src="rational-4.js?v=20260817-0854"></script>
-<script src="rational-5.js?v=20260817-0854"></script>
-<script src="rational-6.js?v=20260817-0854"></script>
+<script src="rational-1.js?v=20260818-1038"></script>
+<script src="rational-2.js?v=20260818-1038"></script>
+<script src="rational-3.js?v=20260818-1038"></script>
+<script src="rational-4.js?v=20260818-1038"></script>
+<script src="rational-5.js?v=20260818-1038"></script>
+<script src="rational-6.js?v=20260818-1038"></script>
+<script src="rational-7.js?v=20260818-1038"></script>
 </body>
 </html>

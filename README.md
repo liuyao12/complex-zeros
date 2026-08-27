@@ -1,9 +1,15 @@
 # Complex zeros
 
-Interactive visualizations of polynomial and rational Newton flows.
+Interactive visualizations and expository notes on polynomial and rational Newton flows.
 
 - **Polynomial / Sendov page:** https://liuyao12.github.io/complex-zeros/
 - **Rational-function page:** https://liuyao12.github.io/complex-zeros/rational.html
+- **Electrostatic field-line essay:** https://liuyao12.github.io/complex-zeros/electrostatic-field-lines.html
+- **Markdown source for the essay:** [docs/electrostatic-field-lines.md](docs/electrostatic-field-lines.md)
+
+## Expository article
+
+The essay develops the common geometry behind finite signed point configurations, constant-argument pencils of real algebraic curves, continuous Newton flow, singular members at critical points, and the Newton graph. A sticky, draggable interactive follows the exposition from the two-point circle and rectangular-hyperbola pencils to singular cubic members for three-point configurations.
 
 ## Polynomial page
 
@@ -32,4 +38,4 @@ A single critical point is deliberately not treated as an independent draggable 
 
 Solid white separatrices run from saddles to zeros; equally thick dashed separatrices run from poles to saddles. The tracer uses the reciprocal coordinate `u = 1/z` for edges crossing or ending at infinity.
 
-On both pages, empty canvas space can be panned and the mouse wheel zooms.
+On both visualization pages, empty canvas space can be panned and the mouse wheel zooms.

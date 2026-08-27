@@ -27,11 +27,17 @@
     stroke-width:1.6;
     stroke-dasharray:3 4;
   }
+  .header-title-wrap{display:grid;gap:6px}
+  .header-links{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+  .header-links a{color:inherit;text-underline-offset:3px}
 </style>
 </head>
 <body>
 <header>
-  <h1>Newtonian graph and Sendov path lengths</h1>
+  <div class="header-title-wrap">
+    <h1>Newtonian graph and Sendov path lengths</h1>
+    <div class="header-links"><a href="electrostatic-field-lines.html">Essay: electrostatic field lines and algebraic pencils</a><a href="rational.html">Rational-function page</a></div>
+  </div>
   <div class="controls">
     <label class="control">degree <select id="degreeSelect"><option>3</option><option>4</option><option selected>5</option><option>6</option><option>7</option><option>8</option></select></label>
     <button id="resetBtn">Reset</button><button id="randomBtn">Random</button><button id="fitBtn">Fit</button>

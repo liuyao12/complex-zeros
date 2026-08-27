@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Electrostatic field lines, algebraic pencils, and Newton graphs</title>
+  <link rel="stylesheet" href="assets/electrostatic-field-lines.css?v=20260827-1">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      },
+      chtml: { displayAlign: 'center' }
+    };
+  </script>
+  <script async id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+  <main class="page article-page">
+    <header class="site-header article-header">
+      <p class="eyebrow">Complex zeros and Newton flows</p>
+      <p class="back-links"><a href="./">← Polynomial / Sendov visualization</a><a href="rational.html">Rational-function visualization</a></p>
+      <h1>Electrostatic field lines, algebraic pencils, and Newton graphs</h1>
+      <p class="article-source"><em>The article body is maintained as <a href="https://github.com/liuyao12/complex-zeros/blob/main/docs/electrostatic-field-lines.md">Markdown on GitHub</a>. The floating diagram is a live companion to the text.</em></p>
+    </header>
+
+    <article class="article-shell">
+      <section class="article-content">
+        <aside class="floating-demo" aria-label="Floating electrostatic field-line demonstration">
+          <figure class="interactive-card" id="ef-card">
+            <div class="interactive-toolbar">
+              <div class="toolbar-row">
+                <label>configuration
+                  <select id="ef-preset">
+                    <option value="dipole">zero + pole</option>
+                    <option value="like">two zeros</option>
+                    <option value="cubic" selected>three zeros</option>
+                    <option value="mixed">two zeros + pole</option>
+                  </select>
+                </label>
+                <button type="button" id="ef-singular">Jump to singular member</button>
+                <button type="button" id="ef-fit">Fit</button>
+                <span class="demo-drag-handle" id="ef-window-drag" role="button" tabindex="0" aria-label="Drag demonstration window"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v18M12 3 8.5 6.5M12 3l3.5 3.5M12 21l-3.5-3.5M12 21l3.5-3.5M3 12h18M3 12l3.5-3.5M3 12l3.5 3.5M21 12l-3.5-3.5M21 12l-3.5 3.5"/></svg></span>
+              </div>
+              <div class="toolbar-row angle-row">
+                <label class="angle-control">pencil angle
+                  <input id="ef-angle" type="range" min="0" max="180" step="0.25" value="45">
+                  <output id="ef-angle-value">45°</output>
+                </label>
+              </div>
+              <div class="toolbar-row toggle-row">
+                <label><input id="ef-pencil-toggle" type="checkbox" checked> pencil</label>
+                <label><input id="ef-potential-toggle" type="checkbox"> equipotentials</label>
+                <label><input id="ef-graph-toggle" type="checkbox" checked> Newton graph</label>
+                <label><input id="ef-flow-toggle" type="checkbox" checked> flow</label>
+              </div>
+            </div>
+            <div class="demo-stage" id="ef-stage">
+              <canvas id="ef-static" width="960" height="680"></canvas>
+              <canvas id="ef-particles" width="960" height="680"></canvas>
+              <svg id="ef-overlay" viewBox="0 0 960 680" preserveAspectRatio="none" aria-label="Interactive field-line diagram"></svg>
+            </div>
+            <figcaption><span id="ef-status" aria-live="polite"></span></figcaption>
+            <span class="demo-resize-handle" id="ef-window-resize" role="button" tabindex="0" aria-label="Resize demonstration window from lower left"></span>
+          </figure>
+        </aside>
+      </section>
+    </article>
+  </main>
+
+  <script src="assets/electrostatic-markdown.js?v=20260827-1" data-markdown="docs/electrostatic-field-lines.md" defer></script>
+  <script src="assets/electrostatic-field-lines.js?v=20260827-1" defer></script>
+</body>
+</html>

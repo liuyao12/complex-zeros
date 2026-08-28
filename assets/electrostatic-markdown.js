@@ -5,7 +5,8 @@
   const stageRules = [
     { test: text => /^Two points with opposite signs/i.test(text), preset: 'dipole' },
     { test: text => /^Two points with like signs/i.test(text), preset: 'like' },
-    { test: text => /^Three points:/i.test(text), preset: 'cubic' },
+    { test: text => /^Two weighted charges:/i.test(text), preset: 'weighted' },
+    { test: text => /^Three positive charges:/i.test(text), preset: 'cubic' },
     { test: text => /^Three signed points:/i.test(text), preset: 'mixed' }
   ];
 

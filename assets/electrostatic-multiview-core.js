@@ -36,6 +36,7 @@
     .ef-mv-left{display:flex;flex-direction:column;align-items:flex-start;gap:5px}
     .ef-mv-left label{display:flex;align-items:center;gap:7px;min-height:22px;white-space:nowrap}
     .ef-mv-right{display:flex;align-items:center;justify-content:flex-end;gap:8px}
+    .ef-mv-right .angle-row{display:block!important;padding:0!important;margin:0!important}
     .ef-mv-right .ef-projective-parameter-panel{display:block!important;width:auto!important;padding:0!important}
     .ef-mv-right .ef-projective-parameter-label{display:none!important}
     .ef-mv-right .ef-projective-parameter-controls{gap:10px!important}
@@ -135,8 +136,8 @@
     const oldLabel=legacyFlow.closest('label');legacyFlow.checked=false;legacyFlow.dispatchEvent(new Event('change',{bubbles:true}));
     [...toggles.querySelectorAll('label')].forEach(l=>{if(l!==oldLabel)left.append(l);});
     const label=document.createElement('label'),input=document.createElement('input');input.type='checkbox';input.checked=true;input.id='ef-electric-flow-toggle';label.append(input,document.createTextNode(' flow'));left.append(label);
-    dial.querySelector('.ef-projective-parameter-label')?.remove();right.append(dial);const fit=document.getElementById('ef-fit');if(fit)right.append(fit);box.append(left,right);tabs?.after(box);
-    toggles.hidden=true;angle?.setAttribute('hidden','');action?.setAttribute('hidden','');
+    dial.querySelector('.ef-projective-parameter-label')?.remove();if(angle)right.append(angle);const fit=document.getElementById('ef-fit');if(fit)right.append(fit);box.append(left,right);tabs?.after(box);
+    toggles.hidden=true;action?.setAttribute('hidden','');
     input.addEventListener('change',()=>{state.flowEnabled=input.checked;if(!input.checked)clearParticles();else resetParticles();});
   }
 

@@ -1,0 +1,89 @@
+/* Article layout, section anchors, and tabbed example selector. */
+.article-content > :not(.floating-demo):not(.margin-note) {
+  transition: max-width 120ms ease-out;
+}
+.article-content h2[id],
+.article-content h3[id] {
+  scroll-margin-top: 18vh;
+}
+.floating-demo {
+  width: min(76vw, var(--demo-width, 540px));
+}
+
+.configuration-row {
+  flex-wrap: nowrap;
+  gap: 8px;
+}
+.configuration-label {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+.configuration-tabs {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  gap: 4px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  padding: 1px;
+}
+.toolbar-row .configuration-tab {
+  flex: 0 0 auto;
+  min-height: 30px;
+  border: 1px solid rgba(24,33,31,.16);
+  border-radius: 999px;
+  background: rgba(255,255,255,.8);
+  padding: 4px 9px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 750;
+  white-space: nowrap;
+  box-shadow: none;
+}
+.toolbar-row .configuration-tab:hover {
+  border-color: rgba(22,135,117,.55);
+  background: #fff;
+  color: var(--ink);
+  filter: none;
+}
+.toolbar-row .configuration-tab.is-active,
+.toolbar-row .configuration-tab[aria-selected="true"] {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+.toolbar-row .configuration-tab:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+}
+.action-row {
+  gap: 7px;
+}
+.action-row #ef-fit {
+  border-color: rgba(24,33,31,.18);
+  background: #fff;
+  color: var(--ink);
+}
+
+@media (max-width: 940px) {
+  .floating-demo {
+    width: 100%;
+  }
+}
+@media (max-width: 640px) {
+  .configuration-row {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .configuration-tabs {
+    order: 3;
+    flex-basis: 100%;
+  }
+  .demo-drag-handle {
+    margin-left: auto;
+  }
+}

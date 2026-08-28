@@ -89,8 +89,6 @@
       const center = centerOf(charge.node);
       if (!center) continue;
 
-      // Keep the original path and its drag listeners, but display every
-      // charge as a round signed marker.
       if (charge.sign === '−' && charge.node.tagName.toLowerCase() === 'path') {
         charge.node.setAttribute('d', circlePath(center.x, center.y, 7.3));
       }
@@ -139,12 +137,6 @@
     const charges = chargeRecords();
     if (!probe || !totalLine || components.length !== charges.length || !components.length) return;
 
-    // One fixed display scale is used throughout the animation. The previous
-    // implementation normalized the longest arrow to 74 px on every frame;
-    // that made the arrow lengths jump and erased the physical 1/r variation.
-    // In screen coordinates q(P-A)/|P-A|^2 still has magnitude 1/r, up to one
-    // common coordinate scale, so a frame-independent multiplier preserves
-    // both the component ratios and their variation as the point moves.
     const canvasScale = Math.max(1, Math.min(stage.clientWidth, stage.clientHeight));
     const scaleFactor = 0.016 * canvasScale * canvasScale;
 
@@ -155,7 +147,6 @@
       const d2 = dx * dx + dy * dy;
       if (!(d2 > 1e-12)) return;
 
-      // q=+1 points away from the charge; q=-1 points toward it.
       const vector = {
         x: charge.q * dx / d2,
         y: charge.q * dy / d2
@@ -234,7 +225,7 @@
   }
 
   const owned = node => node?.nodeType === 1 && (
-    node.matches?.('.ef-charge-sign,.ef-force-parallelogram-layer') ||
+    node.matches?.('.ef-charge-sign,.ef-multiplicity-label,.ef-force-parallelogram-layer') ||
     node.closest?.('.ef-force-parallelogram-layer')
   );
 
@@ -242,9 +233,6 @@
     const externalChange = mutations.some(mutation =>
       [...mutation.addedNodes, ...mutation.removedNodes].some(node => !owned(node))
     );
-    // Mutation observers run before the next paint. Refine immediately rather
-    // than waiting another animation frame, which removes the visible flash of
-    // the provisional, dynamically normalized arrows.
     if (externalChange) refine();
   }).observe(overlay, { childList: true, subtree: true });
 

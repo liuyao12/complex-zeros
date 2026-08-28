@@ -1,14 +1,18 @@
 # Planar electrostatic field lines, algebraic pencils, and Newton graphs
 
-The simplest signed point configurations in the plane already draw familiar algebraic curves. Here the force from a unit point charge has magnitude \(1/r\), rather than the \(1/r^2\) law of three-dimensional electrostatics. Equivalently, the potential of one charge is \(\log r\).
+The simplest signed point configurations in the plane already draw familiar algebraic curves. Here a charge \(q\) at \(a\) produces the planar logarithmic field
 
-With two opposite charges, the field lines are circles. With two like charges, they are rectangular hyperbolas. These facts can be checked directly from the vector field, without complex variables. In the first two tabs, the emphasized member runs automatically around the pencil so that the whole family can be seen before any Newton graph is introduced.
+$$
+q\frac{(x,y)-a}{|(x,y)-a|^2},
+$$
 
-Complex functions become useful with the three-point case: they explain the pattern, show that the field lines form a pencil of real algebraic curves, and identify the equilibrium points with singular members. Only after the general pencil theorem will we introduce continuous Newton flow and the Newton graph.
+whose magnitude is \(|q|/r\), rather than the \(1/r^2\) law of three-dimensional electrostatics. Equivalently, its potential is \(q\log r\).
 
-The floating diagram follows the examples as you read. Blue circles are positive charges, rose diamonds are negative charges, and orange circles are equilibrium points. Drag the charges. The angle slider selects one member of the pencil; **Jump to a singular member** chooses a member through an equilibrium point.
+With two opposite unit charges, the field lines are circles. With two like unit charges, they are rectangular hyperbolas. Increasing one charge from \(+1\) to \(+2\) already raises the containing algebraic curves from conics to cubics. Three unit charges give two further kinds of cubic pencil. We will examine these cases first, and only afterward introduce the complex-variable calculation that explains all of them at once.
 
-Begin with [opposite charges](#two-points-with-opposite-signs-a-pencil-of-circles), then [like charges](#two-points-with-like-signs-a-pencil-of-rectangular-hyperbolas), [three positive charges](#three-points-the-complex-encoding-and-a-cubic-pencil), and [a mixed three-point configuration](#three-signed-points-two-positive-and-one-negative-charge).
+The floating diagram follows the examples as you read. Blue circles are positive charges, rose circles are negative charges, and an integer inside a circle records its charge. Drag the charges. The circular \(\mathbb{RP}^1\) dial selects a member of the pencil; the fixed orange radii mark singular members. Clicking the rim or an orange radius moves smoothly to that parameter and pauses the animation.
+
+Begin with [opposite charges](#two-points-with-opposite-signs-a-pencil-of-circles), then [like charges](#two-points-with-like-signs-a-pencil-of-rectangular-hyperbolas), the [weighted two-point cubic](#two-weighted-charges-a-cubic-pencil-from-2-and-1), [three positive charges](#three-positive-charges-an-irreducible-cubic-pencil), and [two positive with one negative](#three-signed-points-two-positive-and-one-negative-charge).
 
 ## Two points with opposite signs: a pencil of circles
 
@@ -67,6 +71,8 @@ $$
 
 Thus the force is tangent to the circle at every regular point. These circles, together with the limiting straight line \(y=0\), are exactly the field lines. The two charged points are the common base points of a coaxal pencil of circles.
 
+The interactive emphasizes one physical arc from the positive charge to the negative charge, while drawing the rest of the algebraic circle more lightly.
+
 ## Two points with like signs: a pencil of rectangular hyperbolas
 
 Now place positive unit charges at both \((-1,0)\) and \((1,0)\). The field is
@@ -123,9 +129,132 @@ $$
 
 the two coordinate axes crossing at the equilibrium point. Thus, even before complex notation enters, an equilibrium already appears as the node of a singular member of the field-line pencil.
 
-## Three points: the complex encoding and a cubic pencil
+Here a physical field line occupies one branch of a hyperbola: it runs between a charge and infinity, not from one positive charge to the other. The unused branch is retained only as a lighter algebraic continuation.
 
-With three points, direct elimination is still possible, but complex notation explains the whole construction at once.
+## Two weighted charges: a cubic pencil from +2 and -1
+
+Keep the charges at \((-1,0)\) and \((1,0)\), but give them strengths \(+2\) and \(-1\). The field is
+
+$$
+\mathbf E(x,y)
+=
+2\frac{(x+1,y)}{\rho_-^2}
+-
+\frac{(x-1,y)}{\rho_+^2}.
+$$
+
+A direct calculation, of the same kind as in the two conic examples, shows that the field is tangent to the cubic pencil
+
+$$
+V(x,y)=\lambda U(x,y),
+\qquad \lambda\in\mathbb R\cup\{\infty\},
+$$
+
+where
+
+$$
+U=x^3+x^2-x-1+(x+3)y^2,
+$$
+
+and
+
+$$
+V=y(x^2-2x+y^2-3).
+$$
+
+Thus changing only the multiplicity of a charge raises the algebraic degree from \(2\) to \(3\), even though there are still only two distinct charged locations.
+
+The unique equilibrium away from the charges is
+
+$$
+(3,0).
+$$
+
+It lies on the singular member \(\lambda=0\), which factors transparently:
+
+$$
+V=0
+\quad\Longleftrightarrow\quad
+ y\bigl((x-1)^2+y^2-4\bigr)=0.
+$$
+
+So this singular cubic is the union of the real axis and the circle of radius \(2\) centered at \((1,0)\). They cross at the equilibrium \((3,0)\); they also meet at the doubled positive base point \((-1,0)\). This is the simplest cubic illustration of the principle that an equilibrium is detected by a singular member of the field-line pencil.
+
+## Three positive charges: an irreducible cubic pencil
+
+Now place three positive unit charges at
+
+$$
+(-1,0),\qquad (1,0),\qquad (0,1).
+$$
+
+Direct elimination produces another cubic pencil
+
+$$
+V(x,y)=\lambda U(x,y),
+$$
+
+with
+
+$$
+U=x^3-3xy^2+2xy-x,
+$$
+
+and
+
+$$
+V=3x^2y-x^2-y^3+y^2-y+1.
+$$
+
+All members pass through the three charged points. The two equilibria are
+
+$$
+w_\pm=
+\left(\pm\frac{\sqrt2}{3},\frac13\right).
+$$
+
+There are correspondingly two distinguished parameters on the circular dial. At either one, the selected cubic develops an ordinary node at the associated equilibrium. Unlike the weighted two-point example, a generic singular member here is an irreducible nodal cubic rather than an obvious line-circle union.
+
+A nodal cubic is rational: projection from its node gives a rational parametrization. This makes the three-charge case unusually explicit, although in higher degree a single node is generally not enough to make the curve rational.
+
+## Three signed points: two positive and one negative charge
+
+Finally, put positive unit charges at \((-1,0)\) and \((1,0)\), and a negative unit charge at \((0,1)\). Direct elimination again gives a cubic pencil
+
+$$
+V(x,y)=\lambda U(x,y),
+$$
+
+where
+
+$$
+U=x(x^2+y^2-2y-1),
+$$
+
+and
+
+$$
+V=(1+y)x^2+y^3-y^2+y-1.
+$$
+
+The equilibria are
+
+$$
+w_\pm=
+\bigl(0,1\pm\sqrt2\bigr).
+$$
+
+At either critical parameter the cubic has a four-pronged node. The branches now alternate dynamically: two directions lead toward positive charges and two lead backward toward the negative charge. The algebraic appearance is still a nodal cubic, but the signs change the global way its branches connect the distinguished points.
+
+We have now seen three cubic mechanisms:
+
+- a repeated positive charge against a negative charge;
+- three positive unit charges;
+- two positive and one negative unit charge.
+
+The formulas look unrelated if expanded in \(x\) and \(y\). The complex plane reveals that they are all instances of one construction.
+
+## The complex-variable explanation
 
 Identify the plane with \(\mathbb C\). A signed integer charge \(q_j\) at \(a_j\in\mathbb C\) contributes the complex vector
 
@@ -141,7 +270,7 @@ $$
 f(z)=\prod_j(z-a_j)^{q_j}.
 $$
 
-Negative charges give negative exponents, so in general \(f\) is rational. Its logarithmic derivative satisfies
+Negative charges give negative exponents, so in general \(f=P/Q\) is rational. Its logarithmic derivative satisfies
 
 $$
 \frac{f'(z)}{f(z)}
@@ -179,55 +308,33 @@ $$
 \arg f(z)=\theta.
 $$
 
-For three positive unit charges at \(-1\), \(1\), and \(i\), take
+Writing \(f=P/Q\), we may clear the denominator without changing this condition:
 
 $$
-P(z)=(z+1)(z-1)(z-i).
+\arg\bigl(P(z)\overline{Q(z)}\bigr)=\theta\pmod\pi.
 $$
 
-The field lines form the real cubic pencil
+This is exactly the real algebraic pencil seen in the examples.
+
+For the weighted pair,
 
 $$
-\mathcal C_\theta:
-\quad
-\operatorname{Im}\!\left(e^{-i\theta}P(z)\right)=0.
+f(z)=\frac{(z+1)^2}{z-1};
 $$
 
-The three charges are base points: every cubic in the pencil passes through them. Away from the charges, an equilibrium is characterized by
+for three positive charges,
 
 $$
-\mathcal E(w)=0
-\quad\Longleftrightarrow\quad
-P'(w)=0.
+f(z)=(z+1)(z-1)(z-i);
 $$
 
-Here the two equilibrium points are
+and for the mixed three-point configuration,
 
 $$
-w_\pm=\frac{\pm\sqrt2+i}{3}.
+f(z)=\frac{z^2-1}{z-i}.
 $$
 
-For a generic angle, \(\mathcal C_\theta\) is smooth near both points. When
-
-$$
-\theta=\arg P(w_\pm)\pmod\pi,
-$$
-
-the corresponding cubic is singular at \(w_\pm\). Indeed, if \(w\) is a simple equilibrium, then
-
-$$
-P(z)=P(w)+\frac{P''(w)}2(z-w)^2+O((z-w)^3),
-$$
-
-so the singular member has leading equation
-
-$$
-\operatorname{Im}\!\left(
- e^{-i\arg P(w)}P''(w)(z-w)^2
-\right)=0.
-$$
-
-This is an ordinary real node with four branches. A nodal cubic is rational: projection from its node gives a rational parametrization. This makes the three-point case unusually explicit, although in higher degree a single node is generally not enough to make the curve rational.
+Expanding \(P(z)\overline{Q(z)}=U(x,y)+iV(x,y)\) gives precisely the three cubic pairs \(U,V\) above.
 
 ## Theorem: the planar field-line pencil
 
@@ -237,7 +344,7 @@ $$
 f(z)=\frac{P(z)}{Q(z)}.
 $$
 
-For each \(\theta\in\mathbb R/\pi\mathbb Z\), define
+For each \(	heta\in\mathbb R/\pi\mathbb Z\), define
 
 $$
 \boxed{
@@ -252,47 +359,11 @@ $$
 Then:
 
 1. Away from the charges, the connected components of the curves \(\mathcal C_\theta\) are exactly the planar \(1/r\) field lines.
-2. Each \(\mathcal C_\theta\) is a real algebraic curve of degree at most \(\deg P+\deg Q\), and every charge is a base point of the pencil.
-3. A point \(w\) away from the charges is an equilibrium if and only if \(f'(w)=0\). In that case the unique member through \(w\), namely \(\theta=\arg f(w)\pmod\pi\), is singular at \(w\).
+2. Each \(\mathcal C_\theta\) is a real algebraic curve of degree at most \(\deg P+\deg Q\), and every charge is a base point of the pencil, with its multiplicity recorded algebraically.
+3. A point \(w\) away from the charges is an equilibrium if and only if \(f'(w)=0\). In that case the unique member through \(w\), namely \(	heta=\arg f(w)\pmod\pi\), is singular at \(w\).
 4. If \(w\) is a simple critical point of \(f\), the singularity is an ordinary real node with four local branches.
 
-The circle and hyperbola pencils are the degree-two instances of this theorem. Adding further positive or negative charges changes only \(P\) and \(Q\); no new construction is needed.
-
-## Three signed points: two positive and one negative charge
-
-The first mixed three-point example is
-
-$$
-f(z)=\frac{z^2-1}{z-i}.
-$$
-
-It represents positive charges at \(-1\) and \(1\), and a negative charge at \(i\). Its field-line pencil is
-
-$$
-\operatorname{Im}\!\left(
- e^{-i\theta}(z^2-1)(\bar z+i)
-\right)=0,
-$$
-
-again a real cubic pencil. The equilibrium points are the roots of
-
-$$
-P'(z)Q(z)-P(z)Q'(z)=0,
-$$
-
-which here is
-
-$$
-z^2-2iz+1=0.
-$$
-
-Thus
-
-$$
-w_\pm=i(1\pm\sqrt2).
-$$
-
-At either critical angle \(\theta=\arg f(w_\pm)\), the cubic has a four-pronged node. Its branches alternate between branches leading toward positive charges and branches leading toward the negative charge. The dynamical meaning of these four branches is the content of the next theorem.
+The circle and hyperbola pencils are the degree-two instances. All three cubic examples have \(\deg P+\deg Q=3\). Adding further positive or negative charges, or increasing their integer multiplicities, changes only \(P\) and \(Q\); no new construction is needed.
 
 ## Theorem: the Newton graph from singular pencil members
 
@@ -306,33 +377,33 @@ Then:
 
 1. Away from zeros, poles, and critical points,
 
-   $$
-   -\frac{f(z)}{f'(z)}
-   =
-   -\frac{\mathcal E(z)}{|\mathcal E(z)|^2}.
-   $$
+$$
+-\frac{f(z)}{f'(z)}
+=
+-\frac{\mathcal E(z)}{|\mathcal E(z)|^2}.
+$$
 
-   Thus Newton flow has exactly the same unparametrized curves as the planar force field, with the opposite orientation and a different speed.
+Thus Newton flow has exactly the same unparametrized curves as the planar force field, with the opposite orientation and a different speed.
 
 2. Along every nonsingular Newton trajectory,
 
-   $$
-   \frac{d}{dt}f(z(t))=-f(z(t)),
-   \qquad
-   f(z(t))=e^{-t}f(z(0)).
-   $$
+$$
+\frac{d}{dt}f(z(t))=-f(z(t)),
+\qquad
+f(z(t))=e^{-t}f(z(0)).
+$$
 
-   Hence each trajectory is the lift of a radial segment in the value plane and lies on one member \(\mathcal C_\theta\) of the real algebraic pencil.
+Hence each trajectory is the lift of a radial segment in the value plane and lies on one member \(\mathcal C_\theta\) of the real algebraic pencil.
 
 3. If \(w\) is a simple critical point away from the charges, multiply the Newton vector field by the positive factor \(|P'Q-PQ'|^2\). The resulting desingularized field is smooth, \(w\) is a saddle, and its four local separatrices are exactly the four local branches of the singular member
 
-   $$
-   \mathcal C_{\arg f(w)}.
-   $$
+$$
+\mathcal C_{\arg f(w)}.
+$$
 
 4. Under the generic assumptions that the zeros, poles, and critical points are simple and there are no saddle-to-saddle connections, every separatrix arm ends at a zero or a pole. Their union is the full Newton separatrix graph. The zero-going arms form the zero-side Newton graph; the pole-going arms form its dual.
 
-For a polynomial, the only pole is at infinity and the finite zero-side Newton graph is a tree. For a generic rational map, the zero-side graph generally has cycles, and its faces are the pole basins.
+For a polynomial, the only pole is at infinity and the finite zero-side Newton graph is a tree. For a generic rational map, the zero-side graph generally has cycles, and its faces are the pole basins. Multiple charges, such as the \(+2\) charge in the weighted example, are nongeneric degenerations but remain visible as limits of the same construction.
 
 ## The orthogonal lemniscate pencil
 
@@ -387,7 +458,7 @@ This suggests a sharper program than bounding total algebraic length: understand
 The interactive is deliberately limited to small configurations, where the entire pencil and Newton graph can be redrawn live. Natural extensions include:
 
 - tracing a rational parametrization of a selected nodal cubic from its node;
-- displaying the inverse-ray parameter \(\tau=f(z)/f(w)\) along a separatrix;
+- displaying the inverse-ray parameter \(	au=f(z)/f(w)\) along a separatrix;
 - comparing Euclidean chord length, arc length, and radial variation;
 - showing the same graph on the Riemann sphere when a branch passes through infinity;
 - testing whether the first merging saddle attached to a root obeys stronger Sendov-type bounds.

@@ -10,6 +10,7 @@
     text = text
       .replace(/^one zero and one pole\./, 'opposite unit charges.')
       .replace(/^two like charges \/ two zeros\./, 'two like unit charges.')
+      .replace(/^one \+2 charge and one -1 charge: a cubic pencil\./, 'one +2 charge and one −1 charge: a cubic pencil.')
       .replace(/^three zeros: a cubic pencil\./, 'three positive unit charges: a cubic pencil.')
       .replace(/^two zeros and one pole\./, 'two positive and one negative unit charge.')
       .replace(/finite critical point/g, 'finite equilibrium point');

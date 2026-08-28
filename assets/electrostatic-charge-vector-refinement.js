@@ -2,10 +2,12 @@
   'use strict';
 
   const overlay = document.getElementById('ef-overlay');
-  if (!overlay) return;
+  const stage = document.getElementById('ef-stage');
+  if (!overlay || !stage) return;
 
   const NS = 'http://www.w3.org/2000/svg';
   let queued = false;
+  let refining = false;
 
   function svgNode(name, attributes = {}) {
     const node = document.createElementNS(NS, name);
@@ -37,6 +39,9 @@
         stroke-width: .7px;
         vector-effect: non-scaling-stroke;
       }
+      .ef-force-label {
+        display: none !important;
+      }
       .ef-force-parallelogram {
         fill: none;
         stroke: rgba(235,245,250,.67);
@@ -51,6 +56,7 @@
   }
 
   function centerOf(node) {
+    if (!node) return null;
     if (node.tagName.toLowerCase() === 'circle') {
       return { x: +node.getAttribute('cx'), y: +node.getAttribute('cy') };
     }
@@ -83,8 +89,8 @@
       const center = centerOf(charge.node);
       if (!center) continue;
 
-      // Keep the original SVG path and its drag listeners, but change the
-      // negative-charge geometry from a diamond to a round charge marker.
+      // Keep the original path and its drag listeners, but display every
+      // charge as a round signed marker.
       if (charge.sign === '−' && charge.node.tagName.toLowerCase() === 'path') {
         charge.node.setAttribute('d', circlePath(center.x, center.y, 7.3));
       }
@@ -108,6 +114,58 @@
       marker.setAttribute('refX', '8.35');
       marker.setAttribute('refY', '5');
     }
+  }
+
+  function chargeRecords() {
+    return [
+      ...[...overlay.querySelectorAll('.ef-zero')].map(node => ({ q: 1, center: centerOf(node) })),
+      ...[...overlay.querySelectorAll('.ef-pole')].map(node => ({ q: -1, center: centerOf(node) }))
+    ].filter(record => record.center);
+  }
+
+  function setLine(line, start, vector, scaleFactor) {
+    line.setAttribute('x1', start.x);
+    line.setAttribute('y1', start.y);
+    line.setAttribute('x2', start.x + scaleFactor * vector.x);
+    line.setAttribute('y2', start.y + scaleFactor * vector.y);
+  }
+
+  function rescaleForceVectors(group) {
+    for (const label of group.querySelectorAll('.ef-force-label')) label.remove();
+
+    const components = [...group.querySelectorAll('.ef-force-component')];
+    const totalLine = group.querySelector('.ef-force-total');
+    const probe = centerOf(group.querySelector('.ef-force-point'));
+    const charges = chargeRecords();
+    if (!probe || !totalLine || components.length !== charges.length || !components.length) return;
+
+    // One fixed display scale is used throughout the animation. The previous
+    // implementation normalized the longest arrow to 74 px on every frame;
+    // that made the arrow lengths jump and erased the physical 1/r variation.
+    // In screen coordinates q(P-A)/|P-A|^2 still has magnitude 1/r, up to one
+    // common coordinate scale, so a frame-independent multiplier preserves
+    // both the component ratios and their variation as the point moves.
+    const canvasScale = Math.max(1, Math.min(stage.clientWidth, stage.clientHeight));
+    const scaleFactor = 0.016 * canvasScale * canvasScale;
+
+    const total = { x: 0, y: 0 };
+    charges.forEach((charge, index) => {
+      const dx = probe.x - charge.center.x;
+      const dy = probe.y - charge.center.y;
+      const d2 = dx * dx + dy * dy;
+      if (!(d2 > 1e-12)) return;
+
+      // q=+1 points away from the charge; q=-1 points toward it.
+      const vector = {
+        x: charge.q * dx / d2,
+        y: charge.q * dy / d2
+      };
+      total.x += vector.x;
+      total.y += vector.y;
+      setLine(components[index], probe, vector, scaleFactor);
+    });
+
+    setLine(totalLine, probe, total, scaleFactor);
   }
 
   function addParallelogram(group) {
@@ -152,16 +210,21 @@
     const group = overlay.querySelector('.ef-force-construction');
     if (!group) return;
 
-    // The component vectors are already computed as
-    // q (z-a) / |z-a|^2: away from q>0 and toward q<0.
     fixedSizeArrowheads(group);
+    rescaleForceVectors(group);
     addParallelogram(group);
   }
 
   function refine() {
-    queued = false;
-    refineChargeNodes();
-    refineForceConstruction();
+    if (refining) return;
+    refining = true;
+    try {
+      refineChargeNodes();
+      refineForceConstruction();
+    } finally {
+      refining = false;
+      queued = false;
+    }
   }
 
   function queueRefine() {
@@ -179,8 +242,13 @@
     const externalChange = mutations.some(mutation =>
       [...mutation.addedNodes, ...mutation.removedNodes].some(node => !owned(node))
     );
-    if (externalChange) queueRefine();
+    // Mutation observers run before the next paint. Refine immediately rather
+    // than waiting another animation frame, which removes the visible flash of
+    // the provisional, dynamically normalized arrows.
+    if (externalChange) refine();
   }).observe(overlay, { childList: true, subtree: true });
+
+  new ResizeObserver(queueRefine).observe(stage);
 
   installStyles();
   queueRefine();

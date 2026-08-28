@@ -46,7 +46,9 @@
     .ef-mv-shell>.demo-stage{position:absolute;inset:0;width:100%;height:100%;min-height:0;z-index:1;transition:opacity .14s ease}
     .ef-mv-shell>.demo-stage.ef-mv-hidden{visibility:hidden;pointer-events:none;opacity:0}
     .ef-mv-main{position:absolute;inset:0;width:100%;height:100%;visibility:hidden;opacity:0;pointer-events:none;z-index:2;transition:opacity .14s ease}
-    .ef-mv-main.is-active{visibility:visible;opacity:1}
+    .ef-mv-main.is-active{visibility:visible;opacity:1;pointer-events:auto;touch-action:none}
+    .ef-mv-main[data-view="height"]{cursor:grab}
+    .ef-mv-main[data-view="height"].is-dragging{cursor:grabbing}
     #ef-particles{display:none!important}
     #ef-electric-particles{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
     #ef-overlay{z-index:4!important}
@@ -145,7 +147,8 @@
   function buildViews(){
     const shell=document.createElement('div');shell.className='ef-mv-shell';stage.before(shell);shell.append(stage);
     const electric=makeCanvas();electric.id='ef-electric-particles';stage.insertBefore(electric,overlay);
-    const mains={height:makeCanvas('ef-mv-main'),sphere:makeCanvas('ef-mv-main')};shell.append(mains.height,mains.sphere);
+    const mains={height:makeCanvas('ef-mv-main'),sphere:makeCanvas('ef-mv-main')};
+    Object.entries(mains).forEach(([view,canvas])=>canvas.dataset.view=view);shell.append(mains.height,mains.sphere);
     const layer=document.createElement('div');layer.className='ef-mv-insets';const buttons={},canvases={};
     VIEWS.forEach(view=>{const b=document.createElement('button');b.type='button';b.className='ef-mv-inset';b.dataset.view=view;b.title=`Show ${NAMES[view]} as the main view`;b.setAttribute('aria-label',b.title);const c=makeCanvas(),s=document.createElement('span');s.textContent=NAMES[view];b.append(c,s);b.addEventListener('click',()=>setActive(view));layer.append(b);buttons[view]=b;canvases[view]=c;});shell.append(layer);
     Object.assign(state,{shell,electric,mains,buttons,canvases});setActive('plane');
@@ -189,7 +192,7 @@
 
   function updateCharges(){state.chargeQueued=false;const next=readCharges(),sig=signature(next);if(!next.length||sig===state.signature)return;state.charges=next;state.signature=sig;resetParticles();renderStatic();snapshotPlane();}
   function queueCharges(){if(state.chargeQueued)return;state.chargeQueued=true;requestAnimationFrame(updateCharges);}
-  function updateCopy(){const p=[...document.querySelectorAll('.article-content p')].find(x=>x.textContent.includes('The floating diagram follows the examples'));if(!p||p.textContent.includes('corner insets'))return;p.insertAdjacentHTML('beforeend',' The corner insets show the same configuration as the height surface \\(H=-\\log|f|\\) and on the Riemann sphere. Click an inset to exchange it with the plane. The particles follow the electric field from positive toward negative charges.');window.MathJax?.typesetPromise?.([p]);}
+  function updateCopy(){const p=[...document.querySelectorAll('.article-content p')].find(x=>x.textContent.includes('The floating diagram follows the examples'));if(!p||p.textContent.includes('corner insets'))return;p.insertAdjacentHTML('beforeend',' The corner insets show the same configuration as the height surface \\(H=-\\log|f|\\) and on the Riemann sphere. Click an inset to exchange it with the plane. In the main height view, drag to orbit, use the wheel to zoom, and double-click to reset the camera. The particles follow the electric field from positive toward negative charges.');window.MathJax?.typesetPromise?.([p]);}
 
   buildControls();buildViews();
   new MutationObserver(queueCharges).observe(overlay,{childList:true,subtree:false});

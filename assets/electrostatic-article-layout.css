@@ -82,12 +82,11 @@
   background: var(--zero);
 }
 .charge-glyph.negative {
-  border-radius: 2px;
+  border-radius: 50%;
   background: var(--pole);
-  transform: rotate(45deg);
 }
 .charge-glyph.negative > span {
-  transform: rotate(-45deg);
+  transform: none;
 }
 .charge-diagram.two-horizontal .charge-glyph:nth-child(1) { left: 3px; top: 6px; }
 .charge-diagram.two-horizontal .charge-glyph:nth-child(2) { right: 3px; top: 6px; }
@@ -114,6 +113,9 @@
   border: 0 !important;
 }
 
+.angle-control {
+  position: relative;
+}
 .action-row {
   gap: 7px;
 }

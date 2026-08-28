@@ -2,9 +2,9 @@
 
 The simplest signed point configurations in the plane already draw familiar algebraic curves. Here the force from a unit point charge has magnitude \(1/r\), rather than the \(1/r^2\) law of three-dimensional electrostatics. Equivalently, the potential of one charge is \(\log r\).
 
-With two opposite charges, the field lines are circles. With two like charges, they are rectangular hyperbolas. These facts can be checked directly from the vector field, without complex variables. In the first two tabs the highlighted member of the pencil runs automatically through its parameter and loops.
+With two opposite charges, the field lines are circles. With two like charges, they are rectangular hyperbolas. These facts can be checked directly from the vector field, without complex variables. In the first two tabs, the emphasized member runs automatically around the pencil so that the whole family can be seen before any Newton graph is introduced.
 
-Complex functions enter only with the three-point case. They explain why the observed families are pencils of real algebraic curves, identify their singular members, and—after the general pencil theorem is established—produce the Newton graph.
+Complex functions become useful with the three-point case: they explain the pattern, show that the field lines form a pencil of real algebraic curves, and identify the equilibrium points with singular members. Only after the general pencil theorem will we introduce continuous Newton flow and the Newton graph.
 
 The floating diagram follows the examples as you read. Blue circles are positive charges, rose diamonds are negative charges, and orange circles are equilibrium points. Drag the charges. The angle slider selects one member of the pencil; **Jump to a singular member** chooses a member through an equilibrium point.
 
@@ -121,11 +121,11 @@ $$
 xy=0,
 $$
 
-the two coordinate axes crossing at the equilibrium point. Thus an equilibrium appears as the node of a singular member of the field-line pencil, still without using complex notation.
+the two coordinate axes crossing at the equilibrium point. Thus, even before complex notation enters, an equilibrium already appears as the node of a singular member of the field-line pencil.
 
 ## Three points: the complex encoding and a cubic pencil
 
-With three points, a direct elimination is still possible, but complex notation explains the whole construction at once.
+With three points, direct elimination is still possible, but complex notation explains the whole construction at once.
 
 Identify the plane with \(\mathbb C\). A signed integer charge \(q_j\) at \(a_j\in\mathbb C\) contributes the complex vector
 
@@ -229,7 +229,7 @@ $$
 
 This is an ordinary real node with four branches. A nodal cubic is rational: projection from its node gives a rational parametrization. This makes the three-point case unusually explicit, although in higher degree a single node is generally not enough to make the curve rational.
 
-## Theorem: the real-algebraic field-line pencil
+## Theorem: the planar field-line pencil
 
 Let positive integer charges be placed at the zeros of a polynomial \(P\), and negative integer charges at the zeros of a polynomial \(Q\), with \(P\) and \(Q\) coprime. Put
 
@@ -249,79 +249,14 @@ $$
 }
 $$
 
-**Theorem (planar field-line pencil).**
+Then:
 
-1. Away from the charges, the connected components of the curves \(\mathcal C_\theta\) are exactly the unoriented planar \(1/r\) field lines.
+1. Away from the charges, the connected components of the curves \(\mathcal C_\theta\) are exactly the planar \(1/r\) field lines.
 2. Each \(\mathcal C_\theta\) is a real algebraic curve of degree at most \(\deg P+\deg Q\), and every charge is a base point of the pencil.
-3. A point \(w\) away from the charges is an equilibrium if and only if \(f'(w)=0\). In that case the member with \(\theta=\arg f(w)\pmod\pi\) is singular at \(w\).
-4. If \(w\) is a simple critical point of \(f\), that singularity is an ordinary real node with four local branches.
+3. A point \(w\) away from the charges is an equilibrium if and only if \(f'(w)=0\). In that case the unique member through \(w\), namely \(\theta=\arg f(w)\pmod\pi\), is singular at \(w\).
+4. If \(w\) is a simple critical point of \(f\), the singularity is an ordinary real node with four local branches.
 
-The first assertion follows from the calculation
-
-$$
-\frac{d}{ds}\arg f(z(s))=0.
-$$
-
-For the second, write
-
-$$
-U(x,y)=\operatorname{Re}(P(z)\overline{Q(z)}),
-\qquad
-V(x,y)=\operatorname{Im}(P(z)\overline{Q(z)}).
-$$
-
-Then the pencil is simply
-
-$$
-sU+tV=0,
-\qquad [s:t]\in\mathbb{RP}^1,
-$$
-
-and both \(U\) and \(V\) have degree at most \(\deg P+\deg Q\). The equilibrium and node statements follow by differentiating locally. The circle and hyperbola pencils above are the degree-two instances. Adding further positive or negative charges changes only \(P\) and \(Q\); no new construction is required.
-
-## Theorem: the Newton graph from singular pencil members
-
-The same pencil also contains a distinguished finite collection of curves: its singular members.
-
-Put
-
-$$
-D(z)=P'(z)Q(z)-P(z)Q'(z).
-$$
-
-Away from zeros, poles, and critical points, consider the continuous Newton field
-
-$$
-\dot z=-\frac{f(z)}{f'(z)}.
-$$
-
-Since
-
-$$
--\frac{f}{f'}
-=-\frac{\mathcal E}{|\mathcal E|^2},
-$$
-
-it has the same unoriented trajectories as the planar force field, with the opposite orientation and a different speed. In an affine chart it may be desingularized, without changing those trajectories, as
-
-$$
-\dot z=-P(z)Q(z)\overline{D(z)}.
-$$
-
-**Theorem (singular pencil members and the Newton graph).** Suppose \(w\) is a simple critical point of \(f\), away from the charges. Then:
-
-1. along every Newton trajectory,
-   $$
-   f(z(t))=e^{-t}f(z(0));
-   $$
-   in particular, the trajectory lies on one member \(\mathcal C_\theta\) of the real algebraic pencil;
-2. the member \(\mathcal C_{\arg f(w)}\) has an ordinary node at \(w\);
-3. its four local branches are exactly the four separatrices of the desingularized Newton field at the saddle \(w\);
-4. two branches run in forward Newton time toward zeros of \(f\), and two run in backward Newton time toward poles of \(f\), including infinity when appropriate.
-
-Consequently, the union of these distinguished nodal branches over all critical points is the full Newton separatrix graph. Keeping only the zero-going branches gives the zero-side Newton graph; keeping only the pole-going branches gives its dual. Under the usual generic assumptions—simple zeros, poles, and critical points, with no saddle connections—these are embedded dual graphs on the Riemann sphere. In the polynomial case the only pole is at infinity, and the finite zero-side Newton graph is a tree.
-
-This is the point in the exposition where the thick white graph in the interactive becomes relevant: it is not an extra family of curves, but the singular skeleton already contained in the algebraic pencil.
+The circle and hyperbola pencils are the degree-two instances of this theorem. Adding further positive or negative charges changes only \(P\) and \(Q\); no new construction is needed.
 
 ## Three signed points: two positive and one negative charge
 
@@ -357,7 +292,47 @@ $$
 w_\pm=i(1\pm\sqrt2).
 $$
 
-At either critical angle \(\theta=\arg f(w_\pm)\), the cubic has a four-pronged node. The four branches alternate between branches leading toward the two positive charges and branches leading backward toward the negative charge. In this example one can see both the zero-side Newton graph and its pole-side dual in a single singular-cubic picture.
+At either critical angle \(\theta=\arg f(w_\pm)\), the cubic has a four-pronged node. Its branches alternate between branches leading toward positive charges and branches leading toward the negative charge. The dynamical meaning of these four branches is the content of the next theorem.
+
+## Theorem: the Newton graph from singular pencil members
+
+Let \(f=P/Q\) be as above, and consider the continuous Newton equation
+
+$$
+\dot z=-\frac{f(z)}{f'(z)}.
+$$
+
+Then:
+
+1. Away from zeros, poles, and critical points,
+
+   $$
+   -\frac{f(z)}{f'(z)}
+   =
+   -\frac{\mathcal E(z)}{|\mathcal E(z)|^2}.
+   $$
+
+   Thus Newton flow has exactly the same unparametrized curves as the planar force field, with the opposite orientation and a different speed.
+
+2. Along every nonsingular Newton trajectory,
+
+   $$
+   \frac{d}{dt}f(z(t))=-f(z(t)),
+   \qquad
+   f(z(t))=e^{-t}f(z(0)).
+   $$
+
+   Hence each trajectory is the lift of a radial segment in the value plane and lies on one member \(\mathcal C_\theta\) of the real algebraic pencil.
+
+3. If \(w\) is a simple critical point away from the charges, multiply the Newton vector field by the positive factor \(|P'Q-PQ'|^2\). The resulting desingularized field is smooth, \(w\) is a saddle, and its four local separatrices are exactly the four local branches of the singular member
+
+   $$
+   \mathcal C_{\arg f(w)}.
+   $$
+
+4. Under the generic assumptions that the zeros, poles, and critical points are simple and there are no saddle-to-saddle connections, every separatrix arm ends at a zero or a pole. Their union is the full Newton separatrix graph. The zero-going arms form the zero-side Newton graph; the pole-going arms form its dual.
+
+For a polynomial, the only pole is at infinity and the finite zero-side Newton graph is a tree. For a generic rational map, the zero-side graph generally has cycles, and its faces are the pole basins.
 
 ## The orthogonal lemniscate pencil
 

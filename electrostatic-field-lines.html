@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Planar electrostatic field lines, algebraic pencils, and Newton graphs</title>
-  <link rel="stylesheet" href="assets/electrostatic-field-lines.css?v=20260828-4">
-  <link rel="stylesheet" href="assets/electrostatic-article-layout.css?v=20260828-4">
+  <link rel="stylesheet" href="assets/electrostatic-field-lines.css?v=20260828-5">
+  <link rel="stylesheet" href="assets/electrostatic-article-layout.css?v=20260828-5">
   <script>
     window.MathJax = {
       tex: {
@@ -34,10 +34,36 @@
               <div class="toolbar-row configuration-row">
                 <span class="configuration-label">examples</span>
                 <div class="configuration-tabs" role="tablist" aria-label="Charge configurations">
-                  <button type="button" class="configuration-tab is-active" data-ef-preset-tab="dipole" role="tab" aria-selected="true">opposite charges</button>
-                  <button type="button" class="configuration-tab" data-ef-preset-tab="like" role="tab" aria-selected="false" tabindex="-1">like charges</button>
-                  <button type="button" class="configuration-tab" data-ef-preset-tab="cubic" role="tab" aria-selected="false" tabindex="-1">three positive</button>
-                  <button type="button" class="configuration-tab" data-ef-preset-tab="mixed" role="tab" aria-selected="false" tabindex="-1">mixed signs</button>
+                  <button type="button" class="configuration-tab is-active" data-ef-preset-tab="dipole" role="tab" aria-selected="true" aria-label="Opposite charges" title="Opposite charges">
+                    <span class="charge-diagram two-horizontal" aria-hidden="true">
+                      <span class="charge-glyph positive"><span>+</span></span>
+                      <span class="charge-glyph negative"><span>−</span></span>
+                    </span>
+                    <span class="visually-hidden">Opposite charges</span>
+                  </button>
+                  <button type="button" class="configuration-tab" data-ef-preset-tab="like" role="tab" aria-selected="false" tabindex="-1" aria-label="Two like positive charges" title="Two like positive charges">
+                    <span class="charge-diagram two-horizontal" aria-hidden="true">
+                      <span class="charge-glyph positive"><span>+</span></span>
+                      <span class="charge-glyph positive"><span>+</span></span>
+                    </span>
+                    <span class="visually-hidden">Two like positive charges</span>
+                  </button>
+                  <button type="button" class="configuration-tab" data-ef-preset-tab="cubic" role="tab" aria-selected="false" tabindex="-1" aria-label="Three positive charges" title="Three positive charges">
+                    <span class="charge-diagram triangle" aria-hidden="true">
+                      <span class="charge-glyph positive"><span>+</span></span>
+                      <span class="charge-glyph positive"><span>+</span></span>
+                      <span class="charge-glyph positive"><span>+</span></span>
+                    </span>
+                    <span class="visually-hidden">Three positive charges</span>
+                  </button>
+                  <button type="button" class="configuration-tab" data-ef-preset-tab="mixed" role="tab" aria-selected="false" tabindex="-1" aria-label="Two positive charges and one negative charge" title="Two positive charges and one negative charge">
+                    <span class="charge-diagram mixed-triangle" aria-hidden="true">
+                      <span class="charge-glyph positive"><span>+</span></span>
+                      <span class="charge-glyph positive"><span>+</span></span>
+                      <span class="charge-glyph negative"><span>−</span></span>
+                    </span>
+                    <span class="visually-hidden">Two positive charges and one negative charge</span>
+                  </button>
                 </div>
                 <select id="ef-preset" hidden aria-hidden="true">
                   <option value="dipole">opposite charges</option>
@@ -77,10 +103,10 @@
     </article>
   </main>
 
-  <script src="assets/electrostatic-markdown.js?v=20260828-4" data-markdown="docs/electrostatic-field-lines.md" defer></script>
+  <script src="assets/electrostatic-markdown.js?v=20260828-5" data-markdown="docs/electrostatic-field-lines.md" defer></script>
   <script src="assets/electrostatic-field-lines.js?v=20260827-1" defer></script>
   <script src="assets/electrostatic-charge-language.js?v=20260828-2" defer></script>
   <script src="assets/electrostatic-example-behavior.js?v=20260828-4" defer></script>
-  <script src="assets/electrostatic-article-layout.js?v=20260828-4" defer></script>
+  <script src="assets/electrostatic-article-layout.js?v=20260828-5" defer></script>
 </body>
 </html>

@@ -33,15 +33,13 @@
 }
 .toolbar-row .configuration-tab {
   flex: 0 0 auto;
-  min-height: 30px;
+  width: 50px;
+  min-height: 32px;
   border: 1px solid rgba(24,33,31,.16);
   border-radius: 999px;
   background: rgba(255,255,255,.8);
-  padding: 4px 9px;
+  padding: 3px 5px;
   color: var(--muted);
-  font-size: 12px;
-  font-weight: 750;
-  white-space: nowrap;
   box-shadow: none;
 }
 .toolbar-row .configuration-tab:hover {
@@ -60,6 +58,62 @@
   outline: 2px solid var(--accent-2);
   outline-offset: 2px;
 }
+
+.charge-diagram {
+  position: relative;
+  display: block;
+  width: 38px;
+  height: 24px;
+  margin: 0 auto;
+}
+.charge-glyph {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid #06131d;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.28);
+  font: 800 9px/1 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: #06131d;
+}
+.charge-glyph.positive {
+  border-radius: 50%;
+  background: var(--zero);
+}
+.charge-glyph.negative {
+  border-radius: 2px;
+  background: var(--pole);
+  transform: rotate(45deg);
+}
+.charge-glyph.negative > span {
+  transform: rotate(-45deg);
+}
+.charge-diagram.two-horizontal .charge-glyph:nth-child(1) { left: 3px; top: 6px; }
+.charge-diagram.two-horizontal .charge-glyph:nth-child(2) { right: 3px; top: 6px; }
+.charge-diagram.triangle .charge-glyph:nth-child(1) { left: 13px; top: 1px; }
+.charge-diagram.triangle .charge-glyph:nth-child(2) { left: 3px; bottom: 1px; }
+.charge-diagram.triangle .charge-glyph:nth-child(3) { right: 3px; bottom: 1px; }
+.charge-diagram.mixed-triangle .charge-glyph:nth-child(1) { left: 3px; bottom: 1px; }
+.charge-diagram.mixed-triangle .charge-glyph:nth-child(2) { right: 3px; bottom: 1px; }
+.charge-diagram.mixed-triangle .charge-glyph:nth-child(3) { left: 13px; top: 1px; }
+.toolbar-row .configuration-tab.is-active .charge-glyph,
+.toolbar-row .configuration-tab[aria-selected="true"] .charge-glyph {
+  border-color: rgba(3,13,18,.92);
+  box-shadow: 0 0 0 1px rgba(255,255,255,.5), 0 1px 4px rgba(0,0,0,.2);
+}
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
 .action-row {
   gap: 7px;
 }

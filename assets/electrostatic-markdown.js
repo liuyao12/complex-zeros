@@ -5,9 +5,8 @@
   const stageRules = [
     { test: text => /^Two points with opposite signs/i.test(text), preset: 'dipole' },
     { test: text => /^Two points with like signs/i.test(text), preset: 'like' },
-    { test: text => /^Three points/i.test(text), preset: 'cubic' },
-    { test: text => /^The real algebraic pencil for zeros and poles/i.test(text), preset: 'mixed' },
-    { test: text => /^From singular members to the Newton graph/i.test(text), preset: 'mixed' }
+    { test: text => /^Three points:/i.test(text), preset: 'cubic' },
+    { test: text => /^Three signed points:/i.test(text), preset: 'mixed' }
   ];
 
   const escapeHtml = value => String(value)
@@ -26,11 +25,26 @@
     return text;
   };
 
+  const slugify = text => text
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
   function renderMarkdown(markdown) {
     const body = markdown.replace(/^<!--([\s\S]*?)-->\s*/, '').trim();
     const lines = body.split(/\r?\n/);
     const nodes = [];
+    const usedIds = new Map();
     let i = 0;
+
+    const headingId = text => {
+      const base = slugify(text) || 'section';
+      const count = usedIds.get(base) || 0;
+      usedIds.set(base, count + 1);
+      return count ? `${base}-${count + 1}` : base;
+    };
 
     const pushParagraph = collected => {
       const text = collected.join(' ').trim();
@@ -47,14 +61,17 @@
       if (/^##\s+/.test(line)) {
         const text = line.replace(/^##\s+/, '').trim();
         const h2 = document.createElement('h2');
+        h2.id = headingId(text);
         h2.innerHTML = inlineMarkdown(text);
         const rule = stageRules.find(item => item.test(text));
         if (rule) h2.dataset.demoPreset = rule.preset;
         nodes.push(h2); i += 1; continue;
       }
       if (/^###\s+/.test(line)) {
+        const text = line.replace(/^###\s+/, '').trim();
         const h3 = document.createElement('h3');
-        h3.innerHTML = inlineMarkdown(line.replace(/^###\s+/, '').trim());
+        h3.id = headingId(text);
+        h3.innerHTML = inlineMarkdown(text);
         nodes.push(h3); i += 1; continue;
       }
       if (/^\$\$\s*$/.test(line)) {
@@ -114,11 +131,15 @@
       const markdown = await response.text();
       const demo = article.querySelector('.floating-demo');
       const rendered = renderMarkdown(markdown);
-      const firstSection = rendered.findIndex(node => node.tagName === 'H2');
-      if (demo) rendered.splice(firstSection >= 0 ? firstSection : 2, 0, demo);
+      const firstIllustratedSection = rendered.findIndex(node => node.dataset?.demoPreset);
+      if (demo) rendered.splice(firstIllustratedSection >= 0 ? firstIllustratedSection : 2, 0, demo);
       article.replaceChildren(...rendered);
       window.dispatchEvent(new CustomEvent('electrostatic:markdown-rendered'));
-      if (window.MathJax?.typesetPromise) window.MathJax.typesetPromise([article]);
+      if (window.MathJax?.typesetPromise) {
+        window.MathJax.typesetPromise([article]).then(() => {
+          window.dispatchEvent(new CustomEvent('electrostatic:typeset-complete'));
+        });
+      }
     } catch (error) {
       console.warn(`Could not load ${markdownPath}`, error);
     }
